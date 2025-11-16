@@ -9,59 +9,18 @@
     <version>1.4-SNAPSHOT</version>
     <packaging>war</packaging>
 
-    <properties>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
-    <!-- Required for mvn deploy -->
-    <distributionManagement>
-        <repository>
-            <id>internal-releases</id>
-            <url>http://3.111.47.188:8081/artifactory/libs-release-local</url>
-        </repository>
-
-        <snapshotRepository>
-            <id>internal-snapshots</id>
-            <url>http://3.111.47.188:8081/artifactory/libs-snapshot-local</url>
-        </snapshotRepository>
-    </distributionManagement>
-
-    <dependencies>
-        <!-- Jakarta Servlet API -->
-        <dependency>
-            <groupId>jakarta.servlet</groupId>
-            <artifactId>jakarta.servlet-api</artifactId>
-            <version>6.0.0</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <!-- JSP API -->
-        <dependency>
-            <groupId>jakarta.servlet.jsp</groupId>
-            <artifactId>jakarta.servlet.jsp-api</artifactId>
-            <version>3.1.0</version>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
-
     <build>
-        <finalName>StudentManagementApp</finalName>
-
         <plugins>
-
-            <!-- Compiler Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.10.1</version>
                 <configuration>
-                    <release>21</release>
+                    <source>21</source>
+                    <target>21</target>
                 </configuration>
             </plugin>
 
-            <!-- WAR Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
@@ -70,8 +29,40 @@
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
             </plugin>
-
         </plugins>
     </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <version>6.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>jakarta.servlet.jsp</groupId>
+            <artifactId>jakarta.servlet.jsp-api</artifactId>
+            <version>3.1.0</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <!-- Added Deploy Section for Artifactory -->
+    <distributionManagement>
+
+        <!-- Releases go here -->
+        <repository>
+            <id>libs-release-local</id>
+            <url>http://3.111.47.188:8081/artifactory/libs-release-local</url>
+        </repository>
+
+        <!-- SNAPSHOTS go here -->
+        <snapshotRepository>
+            <id>libs-snapshot-local</id>
+            <url>http://3.111.47.188:8081/artifactory/libs-snapshot-local</url>
+        </snapshotRepository>
+
+    </distributionManagement>
 
 </project>

@@ -7,41 +7,52 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StudentServlet extends HttpServlet {
-    private List<Student> studentList = new ArrayList<>();
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private static final List<Student> studentList = new ArrayList<>();
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
         String action = request.getParameter("action");
-        
         if (action == null) {
             action = "list";
         }
 
         switch (action) {
+
             case "new":
-                RequestDispatcher dispatcher = request.getRequestDispatcher("addStudent.jsp");
-                dispatcher.forward(request, response);
+                request.getRequestDispatcher("addStudent.jsp")
+                       .forward(request, response);
                 break;
+
             case "edit":
                 int id = Integer.parseInt(request.getParameter("id"));
                 request.setAttribute("student", studentList.get(id));
-                RequestDispatcher dispatcherEdit = request.getRequestDispatcher("editStudent.jsp");
-                dispatcherEdit.forward(request, response);
+                request.getRequestDispatcher("editStudent.jsp")
+                       .forward(request, response);
                 break;
+
+            case "list":
             default:
                 request.setAttribute("students", studentList);
-                RequestDispatcher listDispatcher = request.getRequestDispatcher("listStudents.jsp");
-                listDispatcher.forward(request, response);
+                request.getRequestDispatcher("listStudents.jsp")
+                       .forward(request, response);
                 break;
         }
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
         String name = request.getParameter("name");
         String email = request.getParameter("email");
 
-        Student student = new Student(name, email);
-        studentList.add(student);
+        if (name != null && email != null) {
+            studentList.add(new Student(name, email));
+        }
 
-        response.sendRedirect("student");
+        response.sendRedirect("student?action=list");
     }
 }

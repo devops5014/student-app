@@ -1,22 +1,58 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title>List of Students</title>
-</head>
-<body>
-<h1>List of Students</h1>
-<table border="1">
-    <tr>
-        <th>Name</th>
-        <th>Email</th>
-    </tr>
-    <c:forEach var="student" items="${students}">
-        <tr>
-            <td>${student.name}</td>
-            <td>${student.email}</td>
-        </tr>
-    </c:forEach>
-</table>
-<a href="student?action=new">Add New Student</a>
-</body>
-</html>
+package com.example;
+
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class StudentServlet extends HttpServlet {
+
+    private static final List<Student> studentList = new ArrayList<>();
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        String action = request.getParameter("action");
+        if (action == null) {
+            action = "list";
+        }
+
+        switch (action) {
+
+            case "new":
+                request.getRequestDispatcher("addStudent.jsp")
+                       .forward(request, response);
+                break;
+
+            case "edit":
+                int id = Integer.parseInt(request.getParameter("id"));
+                request.setAttribute("student", studentList.get(id));
+                request.getRequestDispatcher("editStudent.jsp")
+                       .forward(request, response);
+                break;
+
+            case "list":
+            default:
+                request.setAttribute("students", studentList);
+                request.getRequestDispatcher("listStudents.jsp")
+                       .forward(request, response);
+                break;
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        String name = request.getParameter("name");
+        String email = request.getParameter("email");
+
+        if (name != null && email != null) {
+            studentList.add(new Student(name, email));
+        }
+
+        response.sendRedirect("student?action=list");
+    }
+}

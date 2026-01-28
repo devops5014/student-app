@@ -79,12 +79,12 @@
 
         <repository>
             <id>libs-release-local</id>
-            <url>http://35.154.166.72:8081/artifactory/libs-release-local</url>
+            <url>http://http://18.191.73.251:8081/artifactory/libs-release-local</url>
         </repository>
 
         <snapshotRepository>
             <id>libs-snapshot-local</id>
-            <url>http://35.154.166.72:8081/artifactory/libs-snapshot-local</url>
+            <url>http://http://18.191.73.251:8081/artifactory/libs-snapshot-local</url>
         </snapshotRepository>
 
     </distributionManagement>
